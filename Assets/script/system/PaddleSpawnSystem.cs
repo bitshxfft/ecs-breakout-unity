@@ -1,15 +1,12 @@
 using Unity.Entities;
 using Unity.Jobs;
+using Unity.Mathematics;
 
 [AlwaysSynchronizeSystem]
-public class BallSpawnSystem : JobComponentSystem
+public class PaddleSpawnSystem : JobComponentSystem
 {
 	protected override JobHandle OnUpdate(JobHandle inputDeps)
 	{
-		// #SteveD >>> spawn ball if none exist
-
-		// #SteveD >>> spawn ball on request
-
 		return default;
 	}
 }

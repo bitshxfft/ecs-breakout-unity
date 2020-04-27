@@ -9,7 +9,6 @@ public class PlayerInputSystem : JobComponentSystem
 	protected override JobHandle OnUpdate(JobHandle inputDeps)
 	{
 		Entities
-			//.WithAll<PaddleTag>()
 			.ForEach((ref MoveData moveData, in PlayerInputData playerInputData) =>
 			{
 				int direction = 0;
