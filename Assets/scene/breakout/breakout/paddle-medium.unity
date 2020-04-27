@@ -131,8 +131,10 @@ GameObject:
   m_Component:
   - component: {fileID: 385221689}
   - component: {fileID: 385221688}
-  - component: {fileID: 385221691}
   - component: {fileID: 385221690}
+  - component: {fileID: 385221693}
+  - component: {fileID: 385221692}
+  - component: {fileID: 385221691}
   m_Layer: 0
   m_Name: paddle-medium
   m_TagString: Untagged
@@ -198,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385221687}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.5, z: 0}
+  m_LocalPosition: {x: 0, y: -470, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -213,12 +215,47 @@ MonoBehaviour:
   m_GameObject: {fileID: 385221687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 549f5b73a3691f2f7861720f28795552, type: 3}
+  m_Script: {fileID: 11500000, guid: e6f8caeb49dd6be4c9b9bcc199bb49a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_direction: 0
-  m_speed: 15
 --- !u!114 &385221691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385221687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8bd72f14e2a164abd39161356c4ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_realTranslation:
+    x: 0
+    y: -470
+    z: 0
+  m_pixelPerfectTranslation:
+    x: 0
+    y: 0
+    z: 0
+--- !u!114 &385221692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385221687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158fe6de2a0c5b32994bf841f04cf67a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_direction:
+    x: 0
+    y: 0
+    z: 0
+  m_speed: 1920
+--- !u!114 &385221693
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

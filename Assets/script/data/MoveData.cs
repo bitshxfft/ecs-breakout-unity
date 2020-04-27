@@ -2,8 +2,8 @@ using Unity.Entities;
 using Unity.Mathematics;
 
 [GenerateAuthoringComponent]
-public struct BallMoveData : IComponentData
+public struct MoveData : IComponentData
 {
-	public float2 m_direction;
+	public float3 m_direction;
 	public float m_speed;
 }
