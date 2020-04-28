@@ -3,6 +3,7 @@ using Unity.Jobs;
 using UnityEngine;
 using Unity.Mathematics;
 
+[UpdateBefore(typeof(PixelPerfectMoveSystem))]
 [AlwaysSynchronizeSystem]
 public class PlayerInputSystem : JobComponentSystem
 {

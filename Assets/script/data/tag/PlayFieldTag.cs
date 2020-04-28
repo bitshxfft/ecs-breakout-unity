@@ -1,6 +1,6 @@
 ﻿using Unity.Entities;
 
 [GenerateAuthoringComponent]
-public struct PaddleTag : IComponentData
+public struct PlayFieldTag : IComponentData
 {
 }

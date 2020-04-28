@@ -11,14 +11,9 @@ public class PixelPerfectMoveSystem : JobComponentSystem
 		float dt = Time.DeltaTime;
 
 		Entities
-			.ForEach((ref Translation translation, ref PixelPerfectTranslation ppTranslation, in MoveData moveData) =>
+			.ForEach((ref Translation translation, ref PixelPerfectTranslationData ppTranslation, in MoveData moveData) =>
 			{
-				// keep track of real position
-				ppTranslation.m_realTranslation += (moveData.m_direction * moveData.m_speed * dt);
-				// snap to pixel perfect position
-				ppTranslation.m_pixelPerfectTranslation = math.round(ppTranslation.m_realTranslation);
-				// update Tralslation component to pixel perfect position
-				translation.Value = ppTranslation.m_pixelPerfectTranslation;
+				translation.Value = math.round(translation.Value + (moveData.m_direction * moveData.m_speed * dt));
 			})
 		.Run();
 
