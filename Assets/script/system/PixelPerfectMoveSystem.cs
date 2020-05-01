@@ -11,11 +11,11 @@ public class PixelPerfectMoveSystem : JobComponentSystem
 		float dt = Time.DeltaTime;
 
 		Entities
-			.ForEach((ref Translation translation, ref PixelPerfectTranslationData ppTranslation, in MoveData moveData) =>
+			.ForEach((ref Translation translation, in PixelPerfectTranslationData ppTranslation, in MoveData moveData) =>
 			{
 				translation.Value = math.round(translation.Value + (moveData.m_direction * moveData.m_speed * dt));
 			})
-		.Run();
+			.Run();
 
 		return default;
 	}

@@ -17,7 +17,7 @@ public class PlayerInputSystem : JobComponentSystem
 				direction += Input.GetKey(playerInputData.m_rightKey) ? 1 : 0;
 				moveData.m_direction = new float3(direction, 0.0f, 0.0f);
 			})
-		.Run();
+			.Run();
 
 		return default;
 	}

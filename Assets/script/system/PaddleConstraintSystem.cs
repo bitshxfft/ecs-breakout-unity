@@ -8,7 +8,7 @@ using Unity.Transforms;
 public class PaddleConstraintSystem : JobComponentSystem
 {
 	private EntityQuery m_playfieldQuery = default;
-
+	
 	// --------------------------------------------------------------------------------
 
 	protected override void OnCreate()
@@ -26,12 +26,13 @@ public class PaddleConstraintSystem : JobComponentSystem
 
 		Entities
 			.ForEach((ref Translation translation, in AABBData aabb, in PaddleTag tag) =>
-		{
-			translation.Value.x = math.clamp(
-				translation.Value.x, 
-				playFieldAABB.m_bottomLeft.x - aabb.m_bottomLeft.x, 
-				playFieldAABB.m_topRight.x - aabb.m_topRight.x);
-		}).Run();
+			{
+				translation.Value.x = math.clamp(
+					translation.Value.x, 
+					playFieldAABB.m_bottomLeft.x - aabb.m_bottomLeft.x, 
+					playFieldAABB.m_topRight.x - aabb.m_topRight.x);
+			})
+			.Run();
 
 		return default;
 	}
