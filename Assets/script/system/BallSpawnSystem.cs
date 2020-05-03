@@ -15,7 +15,10 @@ public class BallSpawnSystem : JobComponentSystem
 				if (spawnData.m_delay <= 0.0f)
 				{
 					// #SteveD >>> spawn ball
-					;
+
+					// #SteveD >>> set parent:
+					//entityManager.AddComponentData(myChildEntity, new Parent { Value = myParentEntity });
+					//entityManager.AddComponentData(myChildEntity, new LocalToParent { });
 		
 					// destroy request
 					ecb.DestroyEntity(entity);
