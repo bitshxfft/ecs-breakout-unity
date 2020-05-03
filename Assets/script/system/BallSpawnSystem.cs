@@ -8,6 +8,8 @@ public class BallSpawnSystem : JobComponentSystem
 		float dt = Time.DeltaTime;
 		EntityCommandBuffer ecb = new EntityCommandBuffer(Unity.Collections.Allocator.TempJob);
 		
+		// #SteveD >>> acquire (singleton) paddle
+
 		JobHandle jobHandle = Entities
 			.ForEach((Entity entity, ref BallSpawnData spawnData) =>
 			{
@@ -17,9 +19,13 @@ public class BallSpawnSystem : JobComponentSystem
 					// #SteveD >>> spawn ball
 
 					// #SteveD >>> set parent:
-					//entityManager.AddComponentData(myChildEntity, new Parent { Value = myParentEntity });
-					//entityManager.AddComponentData(myChildEntity, new LocalToParent { });
-		
+					//ecb.AddComponentData(ballEntity, new Parent { Value = paddleEntity });
+					//ecb.AddComponentData(ballEntity, new LocalToParent { });
+					//			>> on fire:
+					//				>> get everything with a balltag and the above components
+					//				>> remove the above 2 components
+					//				>> apply a velocity
+
 					// destroy request
 					ecb.DestroyEntity(entity);
 				}
