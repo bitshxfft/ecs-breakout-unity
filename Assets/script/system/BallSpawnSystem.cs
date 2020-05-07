@@ -54,9 +54,11 @@ public class BallSpawnSystem : JobComponentSystem
 		{
 			EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.TempJob);
 			
+			// #SteveD >>> make singleton
 			NativeArray<BallPrefabData> ballPrefabData = m_ballPrefabQuery.ToComponentDataArray<BallPrefabData>(Allocator.TempJob);
 			NativeArray<Entity> paddles = m_paddleQuery.ToEntityArray(Allocator.TempJob);
-			
+			// <<<<<<<<<<<
+
 			float dt = Time.DeltaTime;
 
 			Entities
@@ -68,7 +70,7 @@ public class BallSpawnSystem : JobComponentSystem
 						Entity ball = ecb.Instantiate(ballPrefabData[0].m_prefab);
 						ecb.AddComponent(ball, new Parent { Value = paddles[0] });
 						ecb.AddComponent(ball, new LocalToParent { });
-						ecb.SetComponent(ball, new Translation() { Value = new float3(0.0f, 32.0f, 0.0f) });
+						ecb.SetComponent(ball, new Translation() { Value = new float3(0.0f, 32.0f, 0.0f) }); // #SteveD >>> construct from paddle and ball AABBs
 						ecb.DestroyEntity(ballSpawnRequest);
 					}
 				})
