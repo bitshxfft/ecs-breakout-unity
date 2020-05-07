@@ -13,6 +13,8 @@ public class PaddleConstraintSystem : JobComponentSystem
 
 	protected override void OnCreate()
 	{
+		base.OnCreate();
+
 		m_playfieldQuery = GetEntityQuery(
 			ComponentType.ReadOnly<PlayFieldTag>(),
 			ComponentType.ReadOnly<AABBData>());

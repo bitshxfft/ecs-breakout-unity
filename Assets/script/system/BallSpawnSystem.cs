@@ -1,40 +1,86 @@
-﻿using Unity.Entities;
+﻿using Unity.Collections;
+using Unity.Entities;
 using Unity.Jobs;
+using Unity.Mathematics;
+using Unity.Transforms;
 
 public class BallSpawnSystem : JobComponentSystem
 {
+	private EntityQuery m_ballQuery = default;
+	private EntityQuery m_spawnRequestQuery = default;
+	private EntityQuery m_ballPrefabQuery = default;
+	private EntityQuery m_paddleQuery = default;
+
+	private EntityArchetype m_spawnRequestArchetype = default;
+
+	// --------------------------------------------------------------------------------
+
+	protected override void OnCreate()
+	{
+		base.OnCreate();
+
+		m_ballQuery = GetEntityQuery(ComponentType.ReadOnly<BallTag>());
+		m_spawnRequestQuery = GetEntityQuery(ComponentType.ReadWrite<BallSpawnData>());
+		m_ballPrefabQuery = GetEntityQuery(ComponentType.ReadOnly<BallPrefabData>());
+		m_paddleQuery = GetEntityQuery(ComponentType.ReadOnly<PaddleTag>());
+
+		m_spawnRequestArchetype = EntityManager.CreateArchetype(typeof(BallSpawnData));
+	}
+
 	protected override JobHandle OnUpdate(JobHandle inputDeps)
 	{
-		float dt = Time.DeltaTime;
-		EntityCommandBuffer ecb = new EntityCommandBuffer(Unity.Collections.Allocator.TempJob);
-		
-		// #SteveD >>> acquire (singleton) paddle
+		int ballCount = m_ballQuery.CalculateEntityCount();
+		int spawnRequestCount = m_spawnRequestQuery.CalculateEntityCount();
 
-		JobHandle jobHandle = Entities
-			.ForEach((Entity entity, ref BallSpawnData spawnData) =>
+		if (ballCount + spawnRequestCount == 0)
+		{
+			EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
+			Entity ballSpawnRequest = ecb.CreateEntity(m_spawnRequestArchetype);
+			BallSpawnData ballSpawnData = new BallSpawnData()
 			{
-				spawnData.m_delay -= dt;
-				if (spawnData.m_delay <= 0.0f)
+				m_delay = 1.0f,
+				m_direction = new float3(0.0f, 0.0f, 0.0f),
+				m_position = new float3(0.0f, 0.0f, 0.0f),
+				m_spawnState = BallSpawnState.AttachToPaddle,
+				m_speed = 0.0f,
+			};
+
+			ecb.SetComponent(ballSpawnRequest, ballSpawnData);
+			ecb.Playback(EntityManager);
+			ecb.Dispose();
+		}
+		
+		if (spawnRequestCount > 0)
+		{
+			EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.TempJob);
+			
+			NativeArray<BallPrefabData> ballPrefabData = m_ballPrefabQuery.ToComponentDataArray<BallPrefabData>(Allocator.TempJob);
+			NativeArray<Entity> paddles = m_paddleQuery.ToEntityArray(Allocator.TempJob);
+			
+			float dt = Time.DeltaTime;
+
+			Entities
+				.ForEach((Entity ballSpawnRequest, int entityInQueryIndex, ref BallSpawnData spawnData) =>
 				{
-					// #SteveD >>> spawn ball
+					spawnData.m_delay -= dt;
+					if (spawnData.m_delay <= 0.0f)
+					{
+						Entity ball = ecb.Instantiate(ballPrefabData[0].m_prefab);
+						ecb.AddComponent(ball, new Parent { Value = paddles[0] });
+						ecb.AddComponent(ball, new LocalToParent { });
+						ecb.SetComponent(ball, new Translation() { Value = new float3(0.0f, 32.0f, 0.0f) });
+						ecb.DestroyEntity(ballSpawnRequest);
+					}
+				})
+				.Run();
 
-					// #SteveD >>> set parent:
-					//ecb.AddComponentData(ballEntity, new Parent { Value = paddleEntity });
-					//ecb.AddComponentData(ballEntity, new LocalToParent { });
-					//			>> on fire:
-					//				>> get everything with a balltag and the above components
-					//				>> remove the above 2 components
-					//				>> apply a velocity
+			ballPrefabData.Dispose();
+			paddles.Dispose();
 
-					// destroy request
-					ecb.DestroyEntity(entity);
-				}
-			})
-			.Schedule(inputDeps);
+			ecb.Playback(EntityManager);
+			ecb.Dispose();
+		}
 		
-		ecb.Playback(EntityManager);
-		ecb.Dispose();
-		
-		return jobHandle;
+		return inputDeps;
 	}
 }
