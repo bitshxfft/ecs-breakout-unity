@@ -132,10 +132,10 @@ GameObject:
   - component: {fileID: 1508332240}
   - component: {fileID: 1508332239}
   - component: {fileID: 1508332243}
-  - component: {fileID: 1508332242}
   - component: {fileID: 1508332241}
   - component: {fileID: 1508332244}
   - component: {fileID: 1508332245}
+  - component: {fileID: 1508332242}
   m_Layer: 0
   m_Name: paddle-medium
   m_TagString: Untagged
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1508332238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd32bdb67c2c83cead83db0152e3b28, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cbd3957faaa8858aa6fd43312b5d505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_leftKey: 276

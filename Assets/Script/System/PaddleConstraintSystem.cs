@@ -22,20 +22,23 @@ public class PaddleConstraintSystem : JobComponentSystem
 
 	protected override JobHandle OnUpdate(JobHandle inputDeps)
 	{
+		// #SD-TODO >>> this never changes, store somewhere?
 		NativeArray<AABBData> playFieldBounds = m_playfieldQuery.ToComponentDataArray<AABBData>(Allocator.TempJob);
 		AABBData playFieldAABB = playFieldBounds[0];
 		playFieldBounds.Dispose();
+		// <<<<<<<<<<<
 
-		Entities
-			.ForEach((ref Translation translation, in AABBData aabb, in PaddleTag tag) =>
+		JobHandle jobHandle = Entities
+			.WithAll<PaddleTag>()
+			.ForEach((ref Translation translation, in AABBData aabb) =>
 			{
 				translation.Value.x = math.clamp(
 					translation.Value.x, 
 					playFieldAABB.m_bottomLeft.x - aabb.m_bottomLeft.x, 
 					playFieldAABB.m_topRight.x - aabb.m_topRight.x);
 			})
-			.Run();
+			.Schedule(inputDeps);
 
-		return default;
+		return jobHandle;
 	}
 }
