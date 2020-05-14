@@ -1,41 +1,45 @@
-﻿using Unity.Collections;
+﻿using Breakout.Component;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-[UpdateAfter(typeof(MoveSystem))]
-public class PaddleConstraintSystem : JobComponentSystem
+namespace Breakout.System
 {
-	private AABB m_playfieldBounds = default;
-
-	// --------------------------------------------------------------------------------
-
-	protected override void OnStartRunning()
+	[UpdateAfter(typeof(MoveSystem))]
+	public class PaddleConstraintSystem : JobComponentSystem
 	{
-		base.OnStartRunning();
+		private AABB m_playfieldBounds = default;
 
-		EntityQuery playfieldQuery = GetEntityQuery(ComponentType.ReadOnly<PlayFieldTag>(), ComponentType.ReadOnly<AABB>());
-		NativeArray<AABB> playFieldBounds = playfieldQuery.ToComponentDataArray<AABB>(Allocator.Temp);
-		m_playfieldBounds = playFieldBounds[0];
-		playFieldBounds.Dispose();
-	}
+		// --------------------------------------------------------------------------------
 
-	protected override JobHandle OnUpdate(JobHandle inputDeps)
-	{
-		AABB playfieldBounds = m_playfieldBounds;
+		protected override void OnStartRunning()
+		{
+			base.OnStartRunning();
 
-		JobHandle jobHandle = Entities
-			.WithAll<PaddleTag>()
-			.ForEach((ref Translation translation, in AABB aabb) =>
-			{
-				translation.Value.x = math.clamp(
-					translation.Value.x, 
-					playfieldBounds.m_bottomLeft.x - aabb.m_bottomLeft.x,
-					playfieldBounds.m_topRight.x - aabb.m_topRight.x);
-			})
-			.Schedule(inputDeps);
+			EntityQuery playfieldQuery = GetEntityQuery(ComponentType.ReadOnly<PlayFieldTag>(), ComponentType.ReadOnly<AABB>());
+			NativeArray<AABB> playFieldBounds = playfieldQuery.ToComponentDataArray<AABB>(Allocator.Temp);
+			m_playfieldBounds = playFieldBounds[0];
+			playFieldBounds.Dispose();
+		}
 
-		return jobHandle;
+		protected override JobHandle OnUpdate(JobHandle inputDeps)
+		{
+			AABB playfieldBounds = m_playfieldBounds;
+
+			JobHandle jobHandle = Entities
+				.WithAll<PaddleTag>()
+				.ForEach((ref Translation translation, in AABB aabb) =>
+				{
+					translation.Value.x = math.clamp(
+						translation.Value.x, 
+						playfieldBounds.m_bottomLeft.x - aabb.m_bottomLeft.x,
+						playfieldBounds.m_topRight.x - aabb.m_topRight.x);
+				})
+				.Schedule(inputDeps);
+
+			return jobHandle;
+		}
 	}
 }

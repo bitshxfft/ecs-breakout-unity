@@ -1,78 +1,82 @@
+using Breakout.Component;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-[UpdateAfter(typeof(MoveSystem))]
-public class PaddleBallCollisionSystem : JobComponentSystem
+namespace Breakout.System
 {
-	private EntityQuery m_paddleQuery = default;
-
-	// --------------------------------------------------------------------------------
-
-	protected override void OnCreate()
+	[UpdateAfter(typeof(MoveSystem))]
+	public class PaddleBallCollisionSystem : JobComponentSystem
 	{
-		base.OnCreate();
+		private EntityQuery m_paddleQuery = default;
 
-		m_paddleQuery = GetEntityQuery(
-			ComponentType.ReadOnly<PaddleTag>(),
-			ComponentType.ReadOnly<Translation>(),
-			ComponentType.ReadOnly<AABB>());
-	}
+		// --------------------------------------------------------------------------------
 
-	protected override JobHandle OnUpdate(JobHandle inputDeps)
-	{
-		NativeArray<Translation> paddleTranslations = m_paddleQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
-		NativeArray<AABB> paddleAABBs = m_paddleQuery.ToComponentDataArray<AABB>(Allocator.TempJob);
+		protected override void OnCreate()
+		{
+			base.OnCreate();
 
-		JobHandle jobHandle = Entities
-			.WithAll<BallTag>()
-			.WithNone<BlockMovement>()
-			.WithDeallocateOnJobCompletion(paddleTranslations)
-			.WithDeallocateOnJobCompletion(paddleAABBs)
-			.ForEach((ref Translation translation, ref Direction direction, in AABB aabb) =>
-			{
-				float2 ballMin = new float2(translation.Value.x, translation.Value.y);
-				ballMin.x += aabb.m_bottomLeft.x;
-				ballMin.y += aabb.m_bottomLeft.y;
+			m_paddleQuery = GetEntityQuery(
+				ComponentType.ReadOnly<PaddleTag>(),
+				ComponentType.ReadOnly<Translation>(),
+				ComponentType.ReadOnly<AABB>());
+		}
 
-				float2 ballMax = new float2(translation.Value.x, translation.Value.y);
-				ballMax.x += aabb.m_topRight.x;
-				ballMax.y += aabb.m_topRight.y;
+		protected override JobHandle OnUpdate(JobHandle inputDeps)
+		{
+			NativeArray<Translation> paddleTranslations = m_paddleQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
+			NativeArray<AABB> paddleAABBs = m_paddleQuery.ToComponentDataArray<AABB>(Allocator.TempJob);
 
-				for (int i = 0, count = paddleTranslations.Length; i < count; ++i)
+			JobHandle jobHandle = Entities
+				.WithAll<BallTag>()
+				.WithNone<BlockMovement>()
+				.WithDeallocateOnJobCompletion(paddleTranslations)
+				.WithDeallocateOnJobCompletion(paddleAABBs)
+				.ForEach((ref Translation translation, ref Direction direction, in AABB aabb) =>
 				{
-					float3 paddlePosition = paddleTranslations[i].Value;
-					AABB paddleAABB = paddleAABBs[i];
+					float2 ballMin = new float2(translation.Value.x, translation.Value.y);
+					ballMin.x += aabb.m_bottomLeft.x;
+					ballMin.y += aabb.m_bottomLeft.y;
 
-					float3 paddleMin = paddlePosition;
-					paddleMin.x += paddleAABB.m_bottomLeft.x;
-					paddleMin.y += paddleAABB.m_bottomLeft.y;
+					float2 ballMax = new float2(translation.Value.x, translation.Value.y);
+					ballMax.x += aabb.m_topRight.x;
+					ballMax.y += aabb.m_topRight.y;
 
-					float3 paddleMax = paddlePosition;
-					paddleMax.x += paddleAABB.m_topRight.x;
-					paddleMax.y += paddleAABB.m_topRight.y;
-
-					if (ballMax.x > paddleMin.x
-						&& ballMin.x < paddleMax.x
-						&& ballMax.y > paddleMin.y
-						&& ballMin.y < paddleMax.y)
+					for (int i = 0, count = paddleTranslations.Length; i < count; ++i)
 					{
-						translation.Value.y = paddlePosition.y + paddleAABB.m_topRight.y - aabb.m_bottomLeft.y;
-					
-						float bounceDelta = (translation.Value.x - paddlePosition.x) / ((paddleMax.x - paddleMin.x) * 0.5f);
+						float3 paddlePosition = paddleTranslations[i].Value;
+						AABB paddleAABB = paddleAABBs[i];
+
+						float3 paddleMin = paddlePosition;
+						paddleMin.x += paddleAABB.m_bottomLeft.x;
+						paddleMin.y += paddleAABB.m_bottomLeft.y;
+
+						float3 paddleMax = paddlePosition;
+						paddleMax.x += paddleAABB.m_topRight.x;
+						paddleMax.y += paddleAABB.m_topRight.y;
+
+						if (ballMax.x > paddleMin.x
+							&& ballMin.x < paddleMax.x
+							&& ballMax.y > paddleMin.y
+							&& ballMin.y < paddleMax.y)
+						{
+							translation.Value.y = paddlePosition.y + paddleAABB.m_topRight.y - aabb.m_bottomLeft.y;
 						
-						// #SD >>> get angle limits from component on paddle
-						float angle = math.radians(45.0f * -bounceDelta); 
-						// <<<<<<<
+							float bounceDelta = (translation.Value.x - paddlePosition.x) / ((paddleMax.x - paddleMin.x) * 0.5f);
+							
+							// #SD >>> get angle limits from component on paddle
+							float angle = math.radians(45.0f * -bounceDelta); 
+							// <<<<<<<
 
-						direction.m_direction = new float2(-math.sin(angle), math.cos(angle));
+							direction.m_direction = new float2(-math.sin(angle), math.cos(angle));
+						}
 					}
-				}
-			})
-			.Schedule(inputDeps);
+				})
+				.Schedule(inputDeps);
 
-		return jobHandle;
+			return jobHandle;
+		}
 	}
 }

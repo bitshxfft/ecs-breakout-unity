@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52998cdf91baf84e8bb22e782c2f7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_collisionLayer: 8
   m_bottomLeft:
     x: -960
     y: -540
