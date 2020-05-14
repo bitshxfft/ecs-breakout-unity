@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5775107069387234375}
   - component: {fileID: 1733165348784962861}
   - component: {fileID: 5576205666821642765}
-  - component: {fileID: 338415981050599240}
+  - component: {fileID: 8421295481426747908}
+  - component: {fileID: 2270016278732181315}
   - component: {fileID: 1394937344020093515}
-  - component: {fileID: 3961810897461208581}
   m_Layer: 0
   m_Name: ball
   m_TagString: Untagged
@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ebe875fbe277d662bfae4e9f3feb680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &338415981050599240
+--- !u!114 &8421295481426747908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,13 +106,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2558927577740368868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 158fe6de2a0c5b32994bf841f04cf67a, type: 3}
+  m_Script: {fileID: 11500000, guid: ce54d4647bcb72c499077d585110c188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_direction:
     x: 0
     y: 0
-    z: 0
+--- !u!114 &2270016278732181315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2558927577740368868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d136254588bb347449892dc06a68a238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_speed: 1200
 --- !u!114 &1394937344020093515
 MonoBehaviour:
@@ -132,16 +143,3 @@ MonoBehaviour:
   m_topRight:
     x: 16
     y: 16
---- !u!114 &3961810897461208581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2558927577740368868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7a14f6214c990cbb876f4dca380233f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_launchKey: 32
