@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 1597292506}
   - component: {fileID: 1597292505}
   - component: {fileID: 1597292504}
+  - component: {fileID: 1597292509}
   - component: {fileID: 1597292503}
   - component: {fileID: 1597292502}
   m_Layer: 0
@@ -157,6 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_leftKey: 276
   m_rightKey: 275
+  m_spawnBallKey: 32
 --- !u!114 &1597292503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_collisionLayer: 1
+  m_collisionFilter: 8
   m_bottomLeft:
     x: -96
     y: -16
@@ -280,3 +283,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1597292509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597292501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65a79feed609082fa7dfd1964d3052d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_displacement:
+    x: 0
+    y: 0
