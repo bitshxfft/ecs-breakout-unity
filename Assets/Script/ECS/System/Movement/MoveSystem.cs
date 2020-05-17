@@ -5,7 +5,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace Breakout.System
+namespace Breakout.System.Movement
 {
 	[UpdateAfter(typeof(CollisionResetSystem))]
 	public class MoveSystem : JobComponentSystem

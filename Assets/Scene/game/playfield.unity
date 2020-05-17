@@ -154,10 +154,10 @@ MonoBehaviour:
   m_collisionFilter: 0
   m_bottomLeft:
     x: 0
-    y: -540
+    y: -700
   m_topRight:
     x: 50
-    y: 540
+    y: 700
 --- !u!4 &102995935
 Transform:
   m_ObjectHideFlags: 0
@@ -205,10 +205,10 @@ MonoBehaviour:
   m_collisionLayer: 16
   m_collisionFilter: 0
   m_bottomLeft:
-    x: -960
+    x: -1100
     y: -100
   m_topRight:
-    x: 960
+    x: 1100
     y: 0
 --- !u!212 &678208908
 SpriteRenderer:
@@ -320,10 +320,10 @@ MonoBehaviour:
   m_collisionLayer: 8
   m_collisionFilter: 0
   m_bottomLeft:
-    x: -960
+    x: -1100
     y: 0
   m_topRight:
-    x: 960
+    x: 1100
     y: 50
 --- !u!1 &1860996585
 GameObject:
@@ -358,10 +358,10 @@ MonoBehaviour:
   m_collisionFilter: 0
   m_bottomLeft:
     x: -50
-    y: -540
+    y: -700
   m_topRight:
     x: 0
-    y: 540
+    y: 700
 --- !u!4 &1860996588
 Transform:
   m_ObjectHideFlags: 0

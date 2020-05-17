@@ -121,6 +121,61 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &764010118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 764010120}
+  - component: {fileID: 764010119}
+  m_Layer: 0
+  m_Name: brickPrefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &764010119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764010118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65b980e6f614835e591f3851a790f3e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_prefab_level1: {fileID: 8631940210821220020, guid: 6253e432c0007f2c59bdc3747b5a6601,
+    type: 3}
+  m_prefab_level2: {fileID: 8631940210821220020, guid: a8f657e83e9a94ac9893250bc231c79f,
+    type: 3}
+  m_prefab_level3: {fileID: 8631940210821220020, guid: 4e103b6fbd5bcd49b9ddb7095924fd12,
+    type: 3}
+  m_prefab_level4: {fileID: 8631940210821220020, guid: f5ad7fcd4770f7742b543aabbe3c2509,
+    type: 3}
+  m_prefab_level5: {fileID: 8631940210821220020, guid: 4c2db4b5e49a240068b2f1f46620e54e,
+    type: 3}
+  m_prefab_level6: {fileID: 8631940210821220020, guid: ead24f8493f9e20d5a86507a5078c490,
+    type: 3}
+--- !u!4 &764010120
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764010118}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1597292501
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +187,7 @@ GameObject:
   - component: {fileID: 1597292503}
   - component: {fileID: 1597292502}
   m_Layer: 0
-  m_Name: ball
+  m_Name: ballPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

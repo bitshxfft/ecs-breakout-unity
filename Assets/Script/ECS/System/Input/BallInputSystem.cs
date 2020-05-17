@@ -6,6 +6,7 @@ using Unity.Collections;
 using Unity.Transforms;
 using Breakout.Component.Movement;
 using Unity.Mathematics;
+using Breakout.System.Movement;
 
 namespace Breakout.System.Input
 {

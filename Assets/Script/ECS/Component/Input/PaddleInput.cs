@@ -9,6 +9,5 @@ namespace Breakout.Component.Input
 	{
 		public KeyCode m_leftKey;
 		public KeyCode m_rightKey;
-		public KeyCode m_spawnBallKey;
 	}
 }

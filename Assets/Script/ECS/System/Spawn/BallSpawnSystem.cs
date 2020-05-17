@@ -3,6 +3,7 @@ using Breakout.Component.Prefab;
 using Breakout.Component.Spawn;
 using Breakout.Component.Tag;
 using Breakout.Config;
+using Breakout.System.Collision;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;

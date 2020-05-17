@@ -2,13 +2,12 @@ using Breakout.Component.Collision;
 using Breakout.Component.Movement;
 using Breakout.Component.Tag;
 using Breakout.Config;
-using Breakout.System.Collision;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace Breakout.System
+namespace Breakout.System.Collision
 {
 	[UpdateAfter(typeof(BSphereVsAABBCollisionSystem))]
 	public class BallCollisionResolutionSystem : JobComponentSystem
