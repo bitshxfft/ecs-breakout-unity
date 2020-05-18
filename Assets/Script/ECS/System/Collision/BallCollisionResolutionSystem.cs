@@ -55,7 +55,7 @@ namespace Breakout.System.Collision
 
 							if (min.x < otherMax.x && prevMin.x >= otherMax.x)
 							{
-								translation.Value.x = otherMax.x - bSphere.m_radius;
+								translation.Value.x = otherMax.x + bSphere.m_radius;
 								direction.m_direction = new float2(-direction.m_direction.x, direction.m_direction.y);
 							}
 							else if (max.x > otherMin.x && prevMax.x <= otherMin.x)
@@ -66,7 +66,7 @@ namespace Breakout.System.Collision
 
 							if (min.y < otherMax.y && prevMin.y >= otherMax.y)
 							{
-								translation.Value.y = otherMax.y - bSphere.m_radius;
+								translation.Value.y = otherMax.y + bSphere.m_radius;
 								direction.m_direction = new float2(direction.m_direction.x, -direction.m_direction.y);
 							}
 							else if (max.y > otherMin.y && prevMax.y <= otherMin.y)
