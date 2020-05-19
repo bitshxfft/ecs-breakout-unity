@@ -29,5 +29,9 @@ namespace Breakout.Config
 		public const float k_multiball3Value		= k_multiball2Value		+ k_multiball3Chance;
 		public const float k_multiball5Value		= k_multiball3Value		+ k_multiball5Chance;
 		public const float k_multiball10Value		= k_multiball5Value		+ k_multiball10Chance;
+
+		public const float k_paddleSpeedMultiplier	= 1.1f;
+		public const float k_ballSpeedMultiplier	= 1.15f;
+		public const float k_paddleSizeMultiplier	= 1.2f;
 	}
 }

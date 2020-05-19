@@ -11,7 +11,8 @@ namespace Breakout.Component.Collision
 		Ball			= 1 << 1,
 		Brick 			= 1 << 2,
 		LevelBounds		= 1 << 3,
-		BallKillzone	= 1 << 4,
+		Killzone		= 1 << 4,
+		Powerup			= 1 << 5,
 	}
 
 	// --------------------------------------------------------------------------------

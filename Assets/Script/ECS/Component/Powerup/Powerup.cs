@@ -1,19 +1,25 @@
 ﻿using System;
+using Unity.Entities;
 
 namespace Breakout.Component.Powerup
 {
 	[Flags]
 	public enum PowerupType : int
 	{
-		PaddleSpeedUp	= 1 << 0,
-		BallSpeedUp		= 1 << 1,
-		BallSpeedDown	= 1 << 2,
-		PaddleSizeUp	= 1 << 3,
-		PaddleSizeDown	= 1 << 4,
-		Multiball_1		= 1 << 5,
-		Multiball_2		= 1 << 6,
-		Multiball_3		= 1 << 7,
-		Multiball_5		= 1 << 8,
-		Multiball_10	= 1 << 9,
+		None		= 0,
+		PaddleSpeed	= 1 << 0,
+		BallSpeed	= 1 << 1,
+		PaddleSize	= 1 << 2,
+		Multiball	= 1 << 3
+	}
+
+	// -----------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------
+
+	[GenerateAuthoringComponent]
+	public struct Powerup : IComponentData
+	{
+		public PowerupType m_powerup;
+		public float m_context;
 	}
 }

@@ -36,7 +36,7 @@ namespace Breakout.System.Collision
 						CollisionData collisionData = collisionEvents[i].m_collisionData;
 						//Debug.LogFormat("[BallCollisionResolutionSystem] Ball collided with layer: {0}\n", collisionData.m_otherLayer);
 
-						if ((collisionData.m_otherLayer & CollisionLayer.BallKillzone) > 0)
+						if ((collisionData.m_otherLayer & CollisionLayer.Killzone) > 0)
 						{
 							ecb.DestroyEntity(entityInQueryIndex, entity);
 						}

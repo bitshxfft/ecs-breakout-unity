@@ -19,15 +19,15 @@ namespace Breakout.System.Input
 			var ecb = new EntityCommandBuffer(Allocator.Temp);
 			Entities
 				.WithAll<BallTag, Parent>()
-				.ForEach((Entity ballEntity, in BallInput ballInputData, in LocalToWorld localToWorld) =>
+				.ForEach((Entity entity, in BallInput ballInputData, in LocalToWorld localToWorld) =>
 				{
 					if (UnityEngine.Input.GetKeyDown(ballInputData.m_launchKey))
 					{
 						float3 position = localToWorld.Position;
-						ecb.RemoveComponent<Parent>(ballEntity);
-						ecb.RemoveComponent<LocalToParent>(ballEntity);
-						ecb.RemoveComponent<BlockMovement>(ballEntity);
-						ecb.SetComponent(ballEntity, new Translation() { Value = position });
+						ecb.RemoveComponent<Parent>(entity);
+						ecb.RemoveComponent<LocalToParent>(entity);
+						ecb.RemoveComponent<BlockMovement>(entity);
+						ecb.SetComponent(entity, new Translation() { Value = position });
 					}
 				})
 				.Run();

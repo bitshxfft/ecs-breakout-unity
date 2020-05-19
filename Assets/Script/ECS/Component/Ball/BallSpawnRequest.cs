@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Breakout.Component.Spawn
+namespace Breakout.Component.Ball
 {
 	public struct BallSpawnRequest : IComponentData
 	{

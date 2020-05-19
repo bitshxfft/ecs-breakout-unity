@@ -1,6 +1,6 @@
-﻿using Breakout.Component.Movement;
+﻿using Breakout.Component.Ball;
+using Breakout.Component.Movement;
 using Breakout.Component.Prefab;
-using Breakout.Component.Spawn;
 using Breakout.Component.Tag;
 using Breakout.Config;
 using Breakout.System.Collision;
@@ -18,7 +18,6 @@ namespace Breakout.System.Spawn
 		private EndSimulationEntityCommandBufferSystem m_ecbSystem = default;
 		private EntityQuery m_paddleQuery = default;
 		private EntityQuery m_ballPrefabQuery = default;
-		private EntityArchetype m_spawnRequestArchetype = default;
 
 		// --------------------------------------------------------------------------------
 
@@ -29,8 +28,7 @@ namespace Breakout.System.Spawn
 			m_ecbSystem = World.GetExistingSystem<EndSimulationEntityCommandBufferSystem>();
 			m_paddleQuery = GetEntityQuery(ComponentType.ReadOnly<PaddleTag>());
 			m_ballPrefabQuery = GetEntityQuery(ComponentType.ReadOnly<BallPrefab>());
-			m_spawnRequestArchetype = EntityManager.CreateArchetype(typeof(BallSpawnRequest));
-
+			
 			RequestBall();
 		}
 
@@ -45,28 +43,28 @@ namespace Breakout.System.Spawn
 			JobHandle jobHandle = Entities
 				.WithDeallocateOnJobCompletion(paddles)
 				.WithDeallocateOnJobCompletion(ballPrefabs)
-				.ForEach((Entity ballSpawnRequest, int entityInQueryIndex, ref BallSpawnRequest spawnData) =>
+				.ForEach((Entity entity, int entityInQueryIndex, ref BallSpawnRequest spawnData) =>
 				{
 					spawnData.m_delay -= dt;
 					if (spawnData.m_delay <= 0.0f)
 					{
-						Entity ball = ecb.Instantiate(entityInQueryIndex, ballPrefabs[0].m_prefab);
+						Entity ballEntity = ecb.Instantiate(entityInQueryIndex, ballPrefabs[0].m_prefab);
 						if (spawnData.m_attachToPaddle)
 						{
-							ecb.AddComponent(entityInQueryIndex, ball, new Parent { Value = paddles[0] });
-							ecb.AddComponent(entityInQueryIndex, ball, new LocalToParent { });
-							ecb.AddComponent(entityInQueryIndex, ball, new BlockMovement { });
-							ecb.SetComponent(entityInQueryIndex, ball, new Translation() { Value = new float3(0.0f, 32.0f, 0.0f) });
+							ecb.AddComponent(entityInQueryIndex, ballEntity, new Parent { Value = paddles[0] });
+							ecb.AddComponent(entityInQueryIndex, ballEntity, new LocalToParent { });
+							ecb.AddComponent(entityInQueryIndex, ballEntity, new BlockMovement { });
+							ecb.SetComponent(entityInQueryIndex, ballEntity, new Translation() { Value = new float3(0.0f, 32.0f, 0.0f) });
 						}
 						else
 						{
-							ecb.SetComponent(entityInQueryIndex, ball, new Translation() { Value = new float3(spawnData.m_position.x, spawnData.m_position.y, 0.0f) });
+							ecb.SetComponent(entityInQueryIndex, ballEntity, new Translation() { Value = new float3(spawnData.m_position.x, spawnData.m_position.y, 0.0f) });
 						}
 
-						ecb.SetComponent(entityInQueryIndex, ball, new Direction() { m_direction = spawnData.m_direction });
-						ecb.SetComponent(entityInQueryIndex, ball, new Speed() { m_speed = spawnData.m_speed });
+						ecb.SetComponent(entityInQueryIndex, ballEntity, new Direction() { m_direction = spawnData.m_direction });
+						ecb.SetComponent(entityInQueryIndex, ballEntity, new Speed() { m_speed = spawnData.m_speed });
 
-						ecb.DestroyEntity(entityInQueryIndex, ballSpawnRequest);
+						ecb.DestroyEntity(entityInQueryIndex, entity);
 					}
 				})
 				.Schedule(inputDeps);
@@ -77,8 +75,8 @@ namespace Breakout.System.Spawn
 
 		private void RequestBall()
 		{
-			Entity spawnRequest = EntityManager.CreateEntity(m_spawnRequestArchetype);
-			EntityManager.SetComponentData<BallSpawnRequest>(
+			Entity spawnRequest = EntityManager.CreateEntity();
+			EntityManager.AddComponentData(
 				spawnRequest,
 				new BallSpawnRequest
 				{

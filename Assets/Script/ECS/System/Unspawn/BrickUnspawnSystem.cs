@@ -1,6 +1,5 @@
 using Breakout.Component.Brick;
 using Breakout.Component.Powerup;
-using Breakout.Component.Spawn;
 using Breakout.Component.Tag;
 using Breakout.Config;
 using Breakout.System.Collision;
@@ -15,8 +14,7 @@ namespace Breakout.System.Unspawn
 	public class BrickUnspawnSystem : JobComponentSystem
 	{
 		private EndSimulationEntityCommandBufferSystem m_ecbSystem = default;
-		private EntityArchetype m_powerupRequestArchetype = default;
-
+		
 		// ----------------------------------------------------------------------------
 
 		protected override void OnCreate()
@@ -24,13 +22,11 @@ namespace Breakout.System.Unspawn
 			base.OnCreate();
 
 			m_ecbSystem = World.GetExistingSystem<EndSimulationEntityCommandBufferSystem>();
-			m_powerupRequestArchetype = EntityManager.CreateArchetype(typeof(PowerupSpawnRequest));
 		}
 
 		protected override JobHandle OnUpdate(JobHandle inputDeps)
 		{
 			var ecb = m_ecbSystem.CreateCommandBuffer().ToConcurrent();
-			EntityArchetype powerupRequestArchetype = m_powerupRequestArchetype;
 
 			JobHandle jobHandle = Entities
 				.WithAll<BrickTag>()
@@ -40,53 +36,61 @@ namespace Breakout.System.Unspawn
 					{
 						ecb.DestroyEntity(entityInQueryIndex, entity);
 
-						Random random = new Random();
-						float r = random.NextFloat(0.0f, 1.0f);
+						// #SteveD >>> acquire random outside of ForEach
+						//Random random = new Random(0);
+						float r = 0.25f;// random.NextFloat(0.0f, 1.0f);
 						if (r < GameConfig.k_multiball10Value)
 						{
-							Entity powerupRequest = ecb.CreateEntity(entityInQueryIndex, powerupRequestArchetype);
-							ecb.SetComponent(entityInQueryIndex, entity, new Translation { Value = translation.Value });
+							Entity powerupRequest = ecb.CreateEntity(entityInQueryIndex);
+							Powerup powerup = new Powerup { m_powerup = PowerupType.None, m_context = 0.0f };
 
 							if (r <= GameConfig.k_paddleSpeedUpValue)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.PaddleSpeedUp });
+								powerup = new Powerup { m_powerup = PowerupType.PaddleSpeed, m_context = GameConfig.k_paddleSpeedMultiplier };
 							}
 							else if (r <= GameConfig.k_ballSpeedUpValue)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.BallSpeedUp });
+								powerup = new Powerup { m_powerup = PowerupType.BallSpeed, m_context = GameConfig.k_ballSpeedMultiplier };
 							}
 							else if (r <= GameConfig.k_ballSpeedDownValue)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.BallSpeedDown });
+								powerup = new Powerup { m_powerup = PowerupType.BallSpeed, m_context = 1.0f / GameConfig.k_ballSpeedMultiplier };
 							}
 							else if (r <= GameConfig.k_paddleSizeUpValue)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.PaddleSizeUp });
+								powerup = new Powerup { m_powerup = PowerupType.PaddleSize, m_context = GameConfig.k_paddleSizeMultiplier };
 							}
 							else if (r <= GameConfig.k_paddleSizeDownValue)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.PaddleSizeDown });
+								powerup = new Powerup { m_powerup = PowerupType.PaddleSize, m_context = 1.0f / GameConfig.k_paddleSizeMultiplier };
 							}
 							else if (r <= GameConfig.k_multiball1Value)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.Multiball_1 });
+								powerup = new Powerup { m_powerup = PowerupType.Multiball, m_context = 1.0f };
 							}
 							else if (r <= GameConfig.k_multiball2Value)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.Multiball_2 });
+								powerup = new Powerup { m_powerup = PowerupType.Multiball, m_context = 2.0f };
 							}
 							else if (r <= GameConfig.k_multiball3Value)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.Multiball_3 });
+								powerup = new Powerup { m_powerup = PowerupType.Multiball, m_context = 3.0f };
 							}
 							else if (r <= GameConfig.k_multiball5Value)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.Multiball_5 });
+								powerup = new Powerup { m_powerup = PowerupType.Multiball, m_context = 5.0f };
 							}
 							else if (r <= GameConfig.k_multiball10Value)
 							{
-								ecb.SetComponent(entityInQueryIndex, entity, new PowerupSpawnRequest { m_powerup = PowerupType.Multiball_10 });
+								powerup = new Powerup { m_powerup = PowerupType.Multiball, m_context = 10.0f };
 							}
+
+							ecb.AddComponent(entityInQueryIndex, powerupRequest, 
+								new PowerupSpawnRequest 
+								{ 
+									m_powerup = powerup, 
+									m_position = new float2(translation.Value.x, translation.Value.y)
+								});
 						}
 					}
 				})

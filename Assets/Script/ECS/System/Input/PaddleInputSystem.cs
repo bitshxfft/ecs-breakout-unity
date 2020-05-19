@@ -1,7 +1,7 @@
+using Breakout.Component.Ball;
 using Breakout.Component.Input;
 using Breakout.Component.Movement;
 using Breakout.Component.Prefab;
-using Breakout.Component.Spawn;
 using Breakout.Component.Tag;
 using Breakout.Config;
 using Breakout.System.Movement;
@@ -36,8 +36,6 @@ namespace Breakout.System.Input
 
 		protected override JobHandle OnUpdate(JobHandle inputDeps)
 		{
-			EntityArchetype ballRequestArchetype = EntityManager.CreateArchetype(typeof(BallSpawnRequest));
-
 			Entities
 				.ForEach((ref Direction direction, in PaddleInput paddleInputData) =>
 				{
@@ -51,8 +49,8 @@ namespace Breakout.System.Input
 			if (m_ballQuery.CalculateEntityCount() == 0
 				&& m_ballRequestQuery.CalculateEntityCount() == 0)
 			{
-				Entity spawnRequest = EntityManager.CreateEntity(ballRequestArchetype);
-				EntityManager.SetComponentData<BallSpawnRequest>(
+				Entity spawnRequest = EntityManager.CreateEntity();
+				EntityManager.AddComponentData(
 					spawnRequest,
 					new BallSpawnRequest
 					{
