@@ -9,7 +9,6 @@ namespace Breakout.Component.Powerup
 		None		= 0,
 		PaddleSpeed	= 1 << 0,
 		BallSpeed	= 1 << 1,
-		PaddleSize	= 1 << 2,
 		Multiball	= 1 << 3
 	}
 
@@ -17,7 +16,7 @@ namespace Breakout.Component.Powerup
 	// -----------------------------------------------------------------------------------
 
 	[GenerateAuthoringComponent]
-	public struct Powerup : IComponentData
+	public struct PowerupData : IComponentData
 	{
 		public PowerupType m_powerup;
 		public float m_context;

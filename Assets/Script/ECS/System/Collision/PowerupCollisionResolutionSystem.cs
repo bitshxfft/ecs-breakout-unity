@@ -26,7 +26,7 @@ namespace Breakout.System.Collision
 
 			JobHandle jobHandle = Entities
 				.WithAll<PowerupTag>()
-				.ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<CollisionEvent> collisionEvents, in Powerup powerup) =>
+				.ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<CollisionEvent> collisionEvents, in PowerupData powerup) =>
 				{
 					for (int i = 0, count = collisionEvents.Length; i < count; ++i)
 					{
@@ -39,9 +39,35 @@ namespace Breakout.System.Collision
 						else if ((collisionData.m_otherLayer & CollisionLayer.Paddle) > 0)
 						{
 							ecb.DestroyEntity(entityInQueryIndex, entity);
-							
+
 							Entity actionRequest = ecb.CreateEntity(entityInQueryIndex);
-							ecb.AddComponent(entityInQueryIndex, actionRequest, new PowerupActivationRequest { m_powerup = powerup });
+							switch (powerup.m_powerup)
+							{
+								case PowerupType.PaddleSpeed:
+									ecb.AddComponent(entityInQueryIndex, actionRequest, 
+										new PaddleSpeedPowerupActivationRequest 
+										{
+											m_speedlMultiplier = powerup.m_context,
+										});
+									break;
+
+								case PowerupType.BallSpeed:
+									ecb.AddComponent(entityInQueryIndex, actionRequest, 
+										new BallSpeedPowerupActivationRequest 
+										{
+											m_speedlMultiplier = powerup.m_context,
+										});
+
+									break;
+								case PowerupType.Multiball:
+									ecb.AddComponent(entityInQueryIndex, actionRequest, 
+										new MultiballPowerupActivationRequest 
+										{
+											m_ballCount = (int)powerup.m_context,
+										});
+									break;
+							}
+							
 						}
 					}
 				})

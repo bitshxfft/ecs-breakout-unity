@@ -7,6 +7,8 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
+// #SD-TODO >>> scale colliders
+
 namespace Breakout.System.Collision
 {
 	[UpdateAfter(typeof(CollisionResetSystem))]
